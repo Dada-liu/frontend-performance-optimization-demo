@@ -1,0 +1,20 @@
+{
+  "name": "frontend-performance-optimization-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "前端性能优化演示项目 - Monorepo",
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "preview": "pnpm -r run preview"
+  },
+  "keywords": [
+    "performance",
+    "optimization",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

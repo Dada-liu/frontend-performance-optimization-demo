@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电商平台首页 - Vanilla</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="container">
+        <h1 class="logo">电商平台</h1>
+        <nav class="nav">
+          <a href="#">首页</a>
+          <a href="#">商品分类</a>
+          <a href="#">购物车</a>
+          <a href="#">我的</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="banner">
+        <div class="banner-content">
+          <h2>精选商品</h2>
+          <p>优质商品等你来选</p>
+        </div>
+      </section>
+
+      <section class="products">
+        <h3>热门商品</h3>
+        <div id="product-list" class="product-list">
+          <!-- 商品列表将通过 JS 动态渲染 -->
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; 2024 电商平台 - 性能优化演示</p>
+    </footer>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
