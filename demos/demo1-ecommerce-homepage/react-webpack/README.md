@@ -11,9 +11,12 @@
 
 ## 优化后分析
 
-1、压缩图片
-1. 【官方方案】使用 image-minimizer-webpack-plugin + sharp 将图片压缩：降至 2.4k
-将图片转换为 WebP：降至 4k
+### 1、压缩图片
+1. 【官方方案】使用 image-minimizer-webpack-plugin + sharp 
+
+原图片 6224k，插件效果：
+    - 将图片压缩：降至 2.4k
+    - 将图片压缩后转换为 WebP：降至 4k
 
 注意 sharp 默认只在 production 环境下开启，开发时想要开启要配置；
 
@@ -22,7 +25,7 @@
 3. 图片懒加载
 使用原生 `loading="lazy"`
 
-2、JS、CSS 压缩
+### 2、JS、CSS 压缩
 
 1. JS 使用 webpack 自带的 Terser 进行压缩
 2. CSS 使用 css-minimizer-webpack-plugin 进行压缩
@@ -85,7 +88,7 @@ webpack 打包后的产物包括：
 如果不加 `runtimeChunk: 'single'`，runtime 会打包进 main 和 vendro 代码里，每次业务逻辑变了都会重新打所有包而重新生成文件hash，这就导致 文件名里加 hash 和 开启http强制缓存 的策略就失效了；
 
 
-3、关键 CSS 内联，其余 CSS 抽成包然后异步引入
+### 3、关键 CSS 内联，其余 CSS 抽成包然后异步引入
 
 1. 方案一：css-loader、mini-css-extract-plugin.loader 将 css 提取为外部 css 文件，再使用 critical 将首屏 css 内联
 2. 方案二：critters-webpack-plugin
@@ -109,7 +112,7 @@ webpack 打包后的产物包括：
 ```
 
 
-4、将未使用的三方库、代码去除
+### 4、将未使用的三方库、代码去除
 
 
 1. 前提条件

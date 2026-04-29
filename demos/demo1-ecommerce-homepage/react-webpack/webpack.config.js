@@ -45,13 +45,13 @@ module.exports = {
       // 图片压缩
       new ImageMinimizerPlugin({
         minimizer: {
-          implementation: ImageMinimizerPlugin.sharpGenerate,
-          // implementation: ImageMinimizerPlugin.sharpMinify,
+          // implementation: ImageMinimizerPlugin.sharpGenerate, // 使用生成器
+          implementation: ImageMinimizerPlugin.sharpMinify, // 使用压缩器
           options: {
             encodeOptions: {
-              // png: { quality: 70 }, // 压缩PNG
-              // jpeg: { quality: 70 },
-              webp: { quality: 70 } // 可选：转WebP
+              png: { quality: 70 }, // 压缩PNG
+              jpeg: { quality: 70 },
+              webp: { quality: 70 } // 
             }
           }
         }
