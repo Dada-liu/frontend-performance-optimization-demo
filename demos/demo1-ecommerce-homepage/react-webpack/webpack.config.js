@@ -22,6 +22,7 @@ module.exports = {
   //   splitChunks: false
   // },
   optimization: {
+    usedExports: true, // 生成模式默认开启，给没有被使用的导出打上标记
     // 问题2: 未做代码分割，所有代码打包到一个文件
     // splitChunks: true,
     splitChunks: {

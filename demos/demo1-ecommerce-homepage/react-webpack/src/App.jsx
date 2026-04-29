@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// 问题4: 完整引入 lodash（实际上只用到一两个方法）
-import _ from 'lodash';
+// 使用 lodash-es（ES Module 版本）支持 tree shaking
+import { cloneDeep } from 'lodash-es';
 // 导入图片（这样 webpack 会处理图片）
 import productImg1 from './assets/images/product_1.png';
 import productImg2 from './assets/images/product_2.png';
@@ -31,7 +31,7 @@ function App() {
   // 实际上只用了 lodash 的一个方法
   useEffect(() => {
     const original = { a: 1, b: { c: 2 } };
-    const cloned = _.cloneDeep(original);
+    const cloned = cloneDeep(original);
     console.log('Cloned:', cloned);
   }, []);
 

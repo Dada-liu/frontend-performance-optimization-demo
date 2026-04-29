@@ -112,6 +112,31 @@ webpack 打包后的产物包括：
 4、将未使用的三方库、代码去除
 
 
+1. 前提条件
+    - 使用 ES6 Module
+    - package.json 中增加 sideEffects 字段
+    ```json
+        {
+            // sideEffects: false, // 所有文件都安全，可尽情删除
+            // sideEffects: [...] // 列表里的文件不能删，其余可删，CSS文件一定要写
+        }
+    ```
+
+2. 在 webpack 配置中开启（生产环境默认开启）：
+```js
+    {
+        optimization: {
+            usedExports: true // 给没有被使用的 导出 打上标记
+        }
+    }
+
+```
+
+3. webpack 自带的 Terser 会把标记的代码删除
+
+
+
+
 
 ## 相关知识点
 
@@ -127,3 +152,6 @@ webpack 打包后的产物包括：
         <link rel="stylesheet" href="main.381fae1763abf651e5a8.css">
     </noscript>
 ```
+
+3、package.json 中 sideEffects 的作用
+告诉 Webpack：哪些文件是 “有副作用” 的，不能随便 Tree Shaking 删掉。

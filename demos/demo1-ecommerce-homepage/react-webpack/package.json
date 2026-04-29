@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "description": "电商平台首页 - React + Webpack 版本",
+  "sideEffects": [
+    "*.css",
+    "src/polyfill/*.js",
+    "src/global/*.js"
+  ],
   "pnpm": {
     "onlyBuiltDependencies": [
       "image-webpack-loader",
