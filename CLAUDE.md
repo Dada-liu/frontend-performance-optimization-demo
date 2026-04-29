@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-使用中文进行交互
+使用中文进行回答，git commit 的内容里不要带上 Claude
 
 ## 项目概述
 

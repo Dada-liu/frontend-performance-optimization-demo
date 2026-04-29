@@ -1,2 +1,9 @@
 packages:
   - 'demos/*'
+  - 'demos/demo1-ecommerce-homepage/react-webpack'
+allowBuilds:
+  cwebp-bin: false
+  gifsicle: false
+  mozjpeg: false
+  optipng-bin: false
+  pngquant-bin: false
