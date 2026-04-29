@@ -4,8 +4,8 @@ const products = Array.from({ length: 20 }, (_, i) => ({
   id: i + 1,
   title: `商品 ${i + 1}`,
   price: (Math.random() * 1000 + 100).toFixed(2),
-  // 问题: 使用本地未压缩的大图片，未使用懒加载
-  image: `images/product_${i + 1}.png`
+  // 问题: 使用本地大图片，未使用懒加载
+  image: `images/product_${i + 1}.jpg`
 }));
 
 // ==================== 问题4: 冗余代码 - 模拟完整引入 lodash ====================
