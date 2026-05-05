@@ -1,5 +1,16 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { FixedSizeList as List } from 'react-window';
+
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
 
 // 生成模拟数据
 const generateData = (count) =>
@@ -8,7 +19,7 @@ const generateData = (count) =>
     name: `用户 ${i + 1}`,
     email: `user${i + 1}@example.com`,
     status: ['活跃', '未激活', '待审核'][i % 3],
-    amount: (Math.random() * 10000).toFixed(2),
+    amount: (Math.random() * 10000 * 100).toFixed(2),
     date: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toLocaleDateString()
   }));
 
@@ -23,6 +34,8 @@ function App() {
   const listRef = useRef(null);
   const containerRef = useRef(null);
   const [listHeight, setListHeight] = useState(400);
+
+  const debouncedSearch = useDebounce(searchTerm, 300);
 
   useEffect(() => {
     const updateHeight = () => {
@@ -39,11 +52,11 @@ function App() {
   const filteredData = useMemo(() => {
     let result = [...data];
 
-    if (searchTerm) {
+    if (debouncedSearch) {
       result = result.filter(
         (item) =>
-          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.email.toLowerCase().includes(searchTerm.toLowerCase())
+          item.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+          item.email.toLowerCase().includes(debouncedSearch.toLowerCase())
       );
     }
 
@@ -56,7 +69,7 @@ function App() {
     });
 
     return result;
-  }, [data, searchTerm, sortField, sortOrder]);
+  }, [data, debouncedSearch, sortField, sortOrder]);
 
   const handleSort = (field) => {
     if (sortField === field) {
