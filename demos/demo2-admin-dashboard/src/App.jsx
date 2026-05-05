@@ -15,7 +15,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState('id');
   const [sortOrder, setSortOrder] = useState('asc');
-  const [data] = useState(() => generateData(1000));
+  const [data] = useState(() => generateData(10000));
 
   const filteredData = useMemo(() => {
     let result = [...data];
@@ -91,7 +91,7 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              {filteredData.slice(0, 100).map((item) => (
+              {filteredData.map((item) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>{item.name}</td>
