@@ -19,6 +19,7 @@ body {
   background: #304156;
   color: #fff;
   padding: 20px 0;
+  flex-shrink: 0;
 }
 
 .sidebar .logo {
@@ -54,6 +55,7 @@ body {
   background: #fff;
   padding: 20px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
 }
 
 .header h1 {
@@ -67,6 +69,7 @@ body {
   align-items: center;
   gap: 16px;
   border-bottom: 1px solid #eee;
+  flex-shrink: 0;
 }
 
 .search-input {
@@ -89,38 +92,59 @@ body {
 }
 
 .table-container {
+  flex: 1;
   padding: 20px;
-  overflow: auto;
-  max-height: calc(100vh - 140px);
-}
-
-.data-table {
-  width: 100%;
-  background: #fff;
-  border-collapse: collapse;
-  border-radius: 4px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-.data-table th,
-.data-table td {
-  padding: 12px 16px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-.data-table th {
+.virtual-table-header {
+  display: flex;
   background: #fafafa;
+  border: 1px solid #eee;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
   font-weight: 600;
+  flex-shrink: 0;
+}
+
+.header-cell {
   cursor: pointer;
   user-select: none;
 }
 
-.data-table th:hover {
+.header-cell:hover {
   background: #f0f0f0;
 }
 
-.data-table tr:hover {
+.virtual-cell {
+  padding: 12px 16px;
+  text-align: left;
+  border-right: 1px solid #eee;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.virtual-cell:last-child {
+  border-right: none;
+}
+
+.virtual-list {
+  border: 1px solid #eee;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
+.virtual-row {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+}
+
+.virtual-row:hover {
   background: #fafafa;
 }
 

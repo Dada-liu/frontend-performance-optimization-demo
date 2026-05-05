@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { FixedSizeList as List } from 'react-window';
 
 // 生成模拟数据
 const generateData = (count) =>
@@ -11,16 +12,33 @@ const generateData = (count) =>
     date: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toLocaleDateString()
   }));
 
+const ROW_HEIGHT = 48;
+const TABLE_HEADER_HEIGHT = 44;
+
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState('id');
   const [sortOrder, setSortOrder] = useState('asc');
   const [data] = useState(() => generateData(10000));
+  const listRef = useRef(null);
+  const containerRef = useRef(null);
+  const [listHeight, setListHeight] = useState(400);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (containerRef.current) {
+        const containerHeight = containerRef.current.clientHeight;
+        setListHeight(containerHeight - TABLE_HEADER_HEIGHT);
+      }
+    };
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
 
   const filteredData = useMemo(() => {
     let result = [...data];
 
-    // 筛选
     if (searchTerm) {
       result = result.filter(
         (item) =>
@@ -29,7 +47,6 @@ function App() {
       );
     }
 
-    // 排序
     result.sort((a, b) => {
       const aVal = a[sortField];
       const bVal = b[sortField];
@@ -48,6 +65,22 @@ function App() {
       setSortField(field);
       setSortOrder('asc');
     }
+  };
+
+  const Row = ({ index, style }) => {
+    const item = filteredData[index];
+    return (
+      <div className="virtual-row" style={style}>
+        <div className="virtual-cell" style={{ width: '8%' }}>{item.id}</div>
+        <div className="virtual-cell" style={{ width: '18%' }}>{item.name}</div>
+        <div className="virtual-cell" style={{ width: '25%' }}>{item.email}</div>
+        <div className="virtual-cell" style={{ width: '12%' }}>
+          <span className={`status status-${item.status}`}>{item.status}</span>
+        </div>
+        <div className="virtual-cell" style={{ width: '15%' }}>¥{item.amount}</div>
+        <div className="virtual-cell" style={{ width: '22%' }}>{item.date}</div>
+      </div>
+    );
   };
 
   return (
@@ -78,33 +111,37 @@ function App() {
           <span className="data-count">共 {filteredData.length} 条数据</span>
         </div>
 
-        <div className="table-container">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort('id')}>ID {sortField === 'id' && (sortOrder === 'asc' ? '↑' : '↓')}</th>
-                <th onClick={() => handleSort('name')}>用户名 {sortField === 'name' && (sortOrder === 'asc' ? '↑' : '↓')}</th>
-                <th onClick={() => handleSort('email')}>邮箱 {sortField === 'email' && (sortOrder === 'asc' ? '↑' : '↓')}</th>
-                <th onClick={() => handleSort('status')}>状态 {sortField === 'status' && (sortOrder === 'asc' ? '↑' : '↓')}</th>
-                <th onClick={() => handleSort('amount')}>金额 {sortField === 'amount' && (sortOrder === 'asc' ? '↑' : '↓')}</th>
-                <th onClick={() => handleSort('date')}>日期 {sortField === 'date' && (sortOrder === 'asc' ? '↑' : '↓')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.email}</td>
-                  <td>
-                    <span className={`status status-${item.status}`}>{item.status}</span>
-                  </td>
-                  <td>¥{item.amount}</td>
-                  <td>{item.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="table-container" ref={containerRef}>
+          <div className="virtual-table-header">
+            <div className="virtual-cell header-cell" style={{ width: '8%' }} onClick={() => handleSort('id')}>
+              ID {sortField === 'id' && (sortOrder === 'asc' ? '↑' : '↓')}
+            </div>
+            <div className="virtual-cell header-cell" style={{ width: '18%' }} onClick={() => handleSort('name')}>
+              用户名 {sortField === 'name' && (sortOrder === 'asc' ? '↑' : '↓')}
+            </div>
+            <div className="virtual-cell header-cell" style={{ width: '25%' }} onClick={() => handleSort('email')}>
+              邮箱 {sortField === 'email' && (sortOrder === 'asc' ? '↑' : '↓')}
+            </div>
+            <div className="virtual-cell header-cell" style={{ width: '12%' }} onClick={() => handleSort('status')}>
+              状态 {sortField === 'status' && (sortOrder === 'asc' ? '↑' : '↓')}
+            </div>
+            <div className="virtual-cell header-cell" style={{ width: '15%' }} onClick={() => handleSort('amount')}>
+              金额 {sortField === 'amount' && (sortOrder === 'asc' ? '↑' : '↓')}
+            </div>
+            <div className="virtual-cell header-cell" style={{ width: '22%' }} onClick={() => handleSort('date')}>
+              日期 {sortField === 'date' && (sortOrder === 'asc' ? '↑' : '↓')}
+            </div>
+          </div>
+          <List
+            ref={listRef}
+            className="virtual-list"
+            height={listHeight}
+            itemCount={filteredData.length}
+            itemSize={ROW_HEIGHT}
+            width="100%"
+          >
+            {Row}
+          </List>
         </div>
       </main>
     </div>
