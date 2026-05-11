@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ResponsiveImage from './components/ResponsiveImage';
 
 // 生成资讯数据
 const generateNews = (count) =>
@@ -6,7 +7,7 @@ const generateNews = (count) =>
     id: i + 1,
     title: `这是一条资讯标题 ${i + 1}，点击查看详情`,
     category: ['科技', '财经', '体育', '娱乐', '国际'][i % 5],
-    image: `https://picsum.photos/400/200?random=${i}`,
+    seed: i,
     author: `记者 ${(i % 10) + 1}`,
     time: `${Math.floor(Math.random() * 24)}小时前`,
     views: Math.floor(Math.random() * 10000)
@@ -41,7 +42,7 @@ function App() {
           {newsList.map((news) => (
             <article key={news.id} className="news-item">
               <div className="news-image">
-                <img src={news.image} alt={news.title} loading="lazy" />
+                <ResponsiveImage seed={news.seed} alt={news.title} />
               </div>
               <div className="news-info">
                 <h3 className="news-title">{news.title}</h3>
