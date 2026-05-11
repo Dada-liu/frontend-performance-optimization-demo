@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ResponsiveImage from './components/ResponsiveImage';
+import useScrollThrottle from './hooks/useScrollThrottle';
 
 // 生成资讯数据
 const generateNews = (count) =>
@@ -16,6 +17,8 @@ const generateNews = (count) =>
 function App() {
   const [newsList] = useState(() => generateNews(30));
   const [activeTab, setActiveTab] = useState('推荐');
+  const contentRef = useRef(null);
+  const isScrolling = useScrollThrottle(contentRef, 150);
 
   const tabs = ['推荐', '科技', '财经', '体育', '娱乐'];
 
@@ -37,12 +40,12 @@ function App() {
         ))}
       </nav>
 
-      <main className="content">
+      <main className="content" ref={contentRef}>
         <div className="news-list">
           {newsList.map((news) => (
             <article key={news.id} className="news-item">
               <div className="news-image">
-                <ResponsiveImage seed={news.seed} alt={news.title} />
+                <ResponsiveImage seed={news.seed} alt={news.title} isScrolling={isScrolling} />
               </div>
               <div className="news-info">
                 <h3 className="news-title">{news.title}</h3>

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import useNetworkType from '../hooks/useNetworkType';
 
 const IMAGE_SIZES = {
@@ -12,11 +12,13 @@ function getImageUrl(seed, size) {
   return `https://picsum.photos/${w}/${h}?random=${seed}`;
 }
 
-export default function ResponsiveImage({ seed, alt, threshold = 200 }) {
+export default function ResponsiveImage({ seed, alt, threshold = 200, isScrolling = false }) {
   const [loaded, setLoaded] = useState(false);
   const [inView, setInView] = useState(false);
   const containerRef = useRef(null);
   const networkType = useNetworkType();
+  const isScrollingRef = useRef(isScrolling);
+  isScrollingRef.current = isScrolling;
 
   useEffect(() => {
     const el = containerRef.current;
@@ -24,7 +26,7 @@ export default function ResponsiveImage({ seed, alt, threshold = 200 }) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !isScrollingRef.current) {
           setInView(true);
           observer.disconnect();
         }
@@ -35,12 +37,26 @@ export default function ResponsiveImage({ seed, alt, threshold = 200 }) {
     return () => observer.disconnect();
   }, [threshold]);
 
+  // 滚动停止后，重新检查未加载的图片
+  useEffect(() => {
+    if (!isScrolling && !inView && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      if (rect.top < window.innerHeight + threshold && rect.bottom > -threshold) {
+        setInView(true);
+      }
+    }
+  }, [isScrolling, inView, threshold]);
+
   // 根据网络类型决定加载的图片分辨率
   // fast (WiFi) → large, medium (4G) → medium, slow (2G/3G) → small
-  const quality = networkType === 'fast' ? 'large' : networkType === 'medium' ? 'medium' : 'small';
+  // 已经加载的图片不能因为网速变化重新加载
+  const quality = useMemo(() => {
+    return networkType === 'fast' ? 'large' : networkType === 'medium' ? 'medium' : 'small';
+  }, [inView])
 
   return (
     <div ref={containerRef} className={`responsive-image${loaded ? ' loaded' : ''}`}>
+      {!loaded && <div className="image-placeholder" />}
       {inView && (
         <picture>
           {/* 移动端小屏 */}
@@ -65,7 +81,6 @@ export default function ResponsiveImage({ seed, alt, threshold = 200 }) {
           />
         </picture>
       )}
-      {!loaded && <div className="image-placeholder" />}
     </div>
   );
 }
