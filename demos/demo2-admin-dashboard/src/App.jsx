@@ -80,7 +80,7 @@ function App() {
     }
   };
 
-  const Row = ({ index, style }) => {
+  const Row = React.useCallback(({ index, style }) => {
     const item = filteredData[index];
     return (
       <div className="virtual-row" style={style}>
@@ -94,7 +94,7 @@ function App() {
         <div className="virtual-cell" style={{ width: '22%' }}>{item.date}</div>
       </div>
     );
-  };
+  }, [ filteredData ]);
 
   return (
     <div className="dashboard">
@@ -147,6 +147,7 @@ function App() {
           </div>
           <List
             ref={listRef}
+            overscanCount={5}
             className="virtual-list"
             height={listHeight}
             itemCount={filteredData.length}
