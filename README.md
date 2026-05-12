@@ -10,15 +10,22 @@
     - 某资讯类APP的H5页面，在移动端（尤其是中低端机型、4G网络环境下）出现加载慢、滑动卡顿、图片错位等问题，用户投诉率较高。
 
 
-## 原生项目
+
+## demo1
+
+### 原生项目
 
 见：[vanilla](https://github.com/Dada-liu/frontend-performance-optimization-demo/blob/main/demos/demo1-ecommerce-homepage/vanilla/README.md)
 
-## Webpack 项目
+### Webpack 项目
 
 见：[react-webpack](https://github.com/Dada-liu/frontend-performance-optimization-demo/blob/main/demos/demo1-ecommerce-homepage/react-webpack/README.md)
 
 
-## Vite 项目
+## demo2
 
-见：
+见：[demo2-admin-dashboard](https://github.com/Dada-liu/frontend-performance-optimization-demo/blob/main/demos/demo2-admin-dashboard/README.md)
+
+## demo3
+
+见：[demo3-news-h5](https://github.com/Dada-liu/frontend-performance-optimization-demo/blob/main/demos/demo3-news-h5/README.md)

@@ -1,12 +1,12 @@
 # Node
 node_modules/
-pnpm-debug.log*
 pnpm-store/
 
 # Build output
 dist/
 build/
 *.local
+*.tsbuildinfo
 
 # IDE
 .idea/
@@ -21,6 +21,7 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+pnpm-debug.log*
 
 # Environment
 .env
@@ -29,7 +30,9 @@ npm-debug.log*
 
 # Test
 coverage/
+.nyc_output/
 
-# Temporary
+# Temp
 *.tmp
+*.temp
 .cache/
